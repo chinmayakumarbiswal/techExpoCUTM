@@ -265,6 +265,7 @@ else {
                         <th scope="col">Campus</th>
                         <th scope="col">School</th>
                         <th scope="col">Department</th>
+                        <th scope="col">Categoty</th>
                         <th scope="col">ExpertIn</th>
                         <th scope="col">Details</th>
                         <th scope="col">Upload File</th>
@@ -274,6 +275,19 @@ else {
                       <?php    
                         foreach($getDataForTable as $getDataForTables){
                       ?>
+                      <div class="modal fade" id="idIs<?=$getDataForTables['regd']?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+                          aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h5 class="modal-title" id="exampleModalLongTitle"><?=$getDataForTables['details']?> </h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                      </button>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
                       <tr>
                         <td><?=$getDataForTables['name']?></td>
                         <td><?=$getDataForTables['regd']?></td>
@@ -284,6 +298,11 @@ else {
                         <td><?=$getDataForTables['dept']?></td>
                         <td><?=$getDataForTables['expertIn']?></td>
                         <td><?=$getDataForTables['tech']?></td>
+                        <td>
+                          <button type="button" class="btn btn-outline-warning btn-icon-text" data-toggle="modal" data-target="#idIs<?=$getDataForTables['regd']?>">
+                            Details
+                          </button>
+                        </td>
                         <td>
                           <button type="button" class="btn btn-outline-warning btn-icon-text" onclick="window.open('../workfile/<?=$getDataForTables['workUpload']?>', '_blank');">
                             Open File
@@ -326,6 +345,10 @@ else {
   <script src="../assets/vendor/simple-datatables/simple-datatables.js"></script>
   <script src="../assets/vendor/tinymce/tinymce.min.js"></script>
   <script src="../assets/vendor/php-email-form/validate.js"></script>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
 
   <!-- Template Main JS File -->
   <script src="../assets/js/main.js"></script>

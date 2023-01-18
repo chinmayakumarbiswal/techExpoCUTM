@@ -106,5 +106,22 @@
         }
         return $data;
     }
+
+    function getAllRegisterStudentByAdminExpertIn($db,$expertIn){
+        $query="SELECT * FROM registerdata WHERE expertIn='$expertIn'";
+        $data=mysqli_query($db, $query);
+        $total=mysqli_num_rows($data);
+        return $total;
+    }
+
+    function getAlldataForGrapthBarByAdmin($db,$expertIn){
+        $query="SELECT COUNT(tech) as totalTech, tech FROM registerdata WHERE expertIn='$expertIn' GROUP BY tech";
+        $run=mysqli_query($db,$query);
+        $data=array();
+        while($d=mysqli_fetch_assoc($run)){
+            $data[]=$d;
+        }
+        return $data;
+    }
     
 ?>

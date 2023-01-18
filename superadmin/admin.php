@@ -21,6 +21,38 @@ if($_SESSION['userType']=="superAdmin")
   $totalInChaterpur=getAllRegisterStudentByAdminCampusWise($db,'Chatrapur');
 
   
+
+  // find data tech wise for pie chat 
+  $totalfood=getAllRegisterStudentByAdminExpertIn($db,'Food Processing');
+  $totalAg=getAllRegisterStudentByAdminExpertIn($db,'Agricultural');
+  $totalManage=getAllRegisterStudentByAdminExpertIn($db,'Management');
+  $totalIt=getAllRegisterStudentByAdminExpertIn($db,'IT');
+  $totalOt=getAllRegisterStudentByAdminExpertIn($db,'Others');
+
+  echo $totalManage;
+
+
+
+  $totalStudentInTech="";
+  $totalTech="";
+  if(isset($_GET['expertIn'])){
+    $getExpertIn=$_GET['expertIn'];
+    $graphData=getAlldataForGrapthBarByAdmin($db,$getExpertIn);
+  }else {
+    $graphData=getAlldataForGrapthBarByAdmin($db,'IT');
+  }
+  
+  foreach ($graphData as $graphDatas) {
+    $totalStudentInTech=$graphDatas['totalTech'].",".$totalStudentInTech;
+    $totalTech="'".$graphDatas['tech']."',".$totalTech;
+    
+  }
+
+  echo $totalTech;
+  echo $totalStudentInTech;
+
+  
+  
 }
 else {
   header('location:../include/logout.php');
@@ -244,16 +276,117 @@ else {
       <div class="row">
 
 
+      <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">No of Students in Area</h5>
+
+              <!-- Pie Chart -->
+              <canvas id="pieChart" style="max-height: 400px;"></canvas>
+              <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                  new Chart(document.querySelector('#pieChart'), {
+                    type: 'pie',
+                    data: {
+                      labels: ['Food Processing','Agricultural','IT','Management','Others'],
+                      datasets: [{
+                        label: 'My First Dataset',
+                        data: [<?=$totalfood?>, <?=$totalAg?>, <?=$totalIt?>, <?=$totalManage?>, <?=$totalOt?>],
+                        backgroundColor: [
+                          'rgb(55, 199, 22)',
+                          'rgb(54, 162, 235)',
+                          'rgb(255, 99, 132)',
+                          'rgb(55, 12, 135)',
+                          'rgb(255, 205, 86)'
+                        ],
+                        hoverOffset: 4
+                      }]
+                    }
+                  });
+                });
+              </script>
+              <!-- End Pie CHart -->
+
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Total Student Expert In</h5>
+                <a href="./admin.php?expertIn=Food Processing" class="btn btn-dark">
+                  Food Processing
+                </a>
+                <a href="./admin.php?expertIn=Agricultural" class="btn btn-dark">
+                  Agricultural
+                </a>
+                <a href="./admin.php?expertIn=IT" class="btn btn-dark">
+                 . IT .
+                </a>
+                <a href="./admin.php?expertIn=Management" class="btn btn-dark">
+                  Management
+                </a>
+                <a href="./admin.php?expertIn=Other" class="btn btn-dark">
+                  Other
+                </a>
+              <!-- Bar Chart -->
+              <canvas id="techSelect" style="max-height: 400px;"></canvas>
+              <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                  new Chart(document.querySelector('#techSelect'), {
+                    type: 'bar',
+                    data: {
+                      labels: [<?=$totalTech?>],
+                      datasets: [{
+                        label: 'Bar Chart',
+                        data: [<?=$totalStudentInTech?>],
+                        backgroundColor: [
+                          'rgba(55, 199, 22, 0.2)',
+                          'rgba(54, 162, 235, 0.2)',
+                          'rgba(255, 99, 132, 0.2)',
+                          'rgba(55, 12, 135, 0.2)',
+                          'rgba(255, 205, 86, 0.2)'
+                        ],
+                        borderColor: [
+                          'rgb(55, 199, 22)',
+                          'rgb(54, 162, 235)',
+                          'rgb(255, 99, 132)',
+                          'rgb(55, 12, 135)',
+                          'rgb(255, 205, 86)'
+                        ],
+                        borderWidth: 1
+                      }]
+                    },
+                    options: {
+                      scales: {
+                        y: {
+                          beginAtZero: true
+                        }
+                      }
+                    }
+                  });
+                });
+              </script>
+              <!-- End Bar CHart -->
+
+            </div>
+          </div>
+        </div>
+
+
+
         <div class="col-lg-12">
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Student Campus Wise</h5>
 
               <!-- Bar Chart -->
-              <canvas id="barChart" style="max-height: 400px;"></canvas>
+              <canvas id="campusSelect" style="max-height: 400px;"></canvas>
               <script>
                 document.addEventListener("DOMContentLoaded", () => {
-                  new Chart(document.querySelector('#barChart'), {
+                  new Chart(document.querySelector('#campusSelect'), {
                     type: 'bar',
                     data: {
                       labels: ['Bhubaneswar', 'Balasore', 'Balangir', 'Paralakhemundi', 'Rayagada', 'Chatrapur'],
