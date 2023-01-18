@@ -62,6 +62,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <meta name="Description" content="CUTM"/>
+        <!-- Favicons -->
+        <link href="./cutm.png" rel="icon">
+        <link href="./cutm.png" rel="apple-touch-icon">
         <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
@@ -69,7 +72,7 @@
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <link rel="stylesheet" href="./assets/css/styleLogin.css">
-        <title>CCCDC Login</title>
+        <title>Cutm Tech Expert Login</title>
     </head>
     <body>
         <section class="login-block">
@@ -81,7 +84,7 @@
                                 <div class="card-block">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <h3 class="text-center heading">CUTM CCCDC Admin Login</h3>
+                                            <h3 class="text-center heading">CUTM TechExpert Admin Login</h3>
 
                                         </div>
                                     </div>
