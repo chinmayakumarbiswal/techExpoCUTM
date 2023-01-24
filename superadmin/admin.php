@@ -18,7 +18,8 @@ if($_SESSION['userType']=="superAdmin")
   $totalInBal=getAllRegisterStudentByAdminCampusWise($db,'Balangir');
   $totalInPkd=getAllRegisterStudentByAdminCampusWise($db,'Paralakhemundi');
   $totalInRgd=getAllRegisterStudentByAdminCampusWise($db,'Rayagada');
-  $totalInChaterpur=getAllRegisterStudentByAdminCampusWise($db,'Chatrapur');
+  $totalInChaterpur=getAllRegisterStudentByAdminCampusWise($db,'Chhatrapur');
+  $totalInVizianagaram=getAllRegisterStudentByAdminCampusWise($db,'Vizianagaram');
 
   
 
@@ -26,10 +27,11 @@ if($_SESSION['userType']=="superAdmin")
   $totalfood=getAllRegisterStudentByAdminExpertIn($db,'Food Processing');
   $totalAg=getAllRegisterStudentByAdminExpertIn($db,'Agricultural');
   $totalManage=getAllRegisterStudentByAdminExpertIn($db,'Management');
-  $totalIt=getAllRegisterStudentByAdminExpertIn($db,'IT');
+  $totalIt=getAllRegisterStudentByAdminExpertIn($db,'IT / Communication Engineering');
   $totalOt=getAllRegisterStudentByAdminExpertIn($db,'Others');
 
-  echo $totalManage;
+  // 
+  //  $totalManage;
 
 
 
@@ -42,9 +44,9 @@ if($_SESSION['userType']=="superAdmin")
   }else if(isset($_GET['campusIs'])){
     $getCampus=$_GET['campusIs'];
     $getDataForTable=getAllDetailsByAdminCampus($db,$getCampus);
-    $graphData=getAlldataForGrapthBarByAdmin($db,'IT');
+    $graphData=getAlldataForGrapthBarByAdmin($db,'IT / Communication Engineering');
   }else {
-    $graphData=getAlldataForGrapthBarByAdmin($db,'IT');
+    $graphData=getAlldataForGrapthBarByAdmin($db,'IT / Communication Engineering');
     $getDataForTable=getAllDetailsByAdmin($db); 
   }
   
@@ -54,8 +56,8 @@ if($_SESSION['userType']=="superAdmin")
     
   }
 
-  echo $totalTech;
-  echo $totalStudentInTech;
+  // echo $totalTech;
+  // echo $totalStudentInTech;
 
   
   
@@ -106,7 +108,7 @@ else {
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center">
+      <a href="admin.php" class="logo d-flex align-items-center">
         <img src="../icon.webp" alt="">
         <span class="d-none d-lg-block">Tech Expert</span>
       </a>
@@ -197,7 +199,7 @@ else {
       <h1>Dashboard</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item"><a href="admin.php">Home</a></li>
           <li class="breadcrumb-item active">Dashboard</li>
         </ol>
       </nav>
@@ -294,7 +296,7 @@ else {
                   new Chart(document.querySelector('#pieChart'), {
                     type: 'pie',
                     data: {
-                      labels: ['Food Processing','Agricultural','IT','Management','Others'],
+                      labels: ['Food Processing','Agricultural','IT / Communication Engineering','Management','Others'],
                       datasets: [{
                         label: 'My First Dataset',
                         data: [<?=$totalfood?>, <?=$totalAg?>, <?=$totalIt?>, <?=$totalManage?>, <?=$totalOt?>],
@@ -322,14 +324,14 @@ else {
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Total Student Expert In</h5>
+            	<a href="./admin.php?expertIn=IT / Communication Engineering" class="btn btn-dark">
+                 IT / Communication Engineering
+                </a>
                 <a href="./admin.php?expertIn=Food Processing" class="btn btn-dark">
                   Food Processing
                 </a>
                 <a href="./admin.php?expertIn=Agricultural" class="btn btn-dark">
                   Agricultural
-                </a>
-                <a href="./admin.php?expertIn=IT" class="btn btn-dark">
-                 . IT .
                 </a>
                 <a href="./admin.php?expertIn=Management" class="btn btn-dark">
                   Management
@@ -387,11 +389,13 @@ else {
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Student Campus Wise</h5>
-              <a href="./admin.php?campusIs=BBSR" class="btn btn-dark">BBSR</a>
               <a href="./admin.php?campusIs=Paralakhemundi" class="btn btn-dark">Paralakhemundi</a>
-              <a href="./admin.php?campusIs=Balasore" class="btn btn-dark">Balasore</a>
+              <a href="./admin.php?campusIs=BBSR" class="btn btn-dark">BBSR</a>
               <a href="./admin.php?campusIs=Bolangir" class="btn btn-dark">Bolangir</a>
               <a href="./admin.php?campusIs=Rayagada" class="btn btn-dark">Rayagada</a>
+              <a href="./admin.php?campusIs=Balasore" class="btn btn-dark">Balasore</a>
+            <a href="./admin.php?campusIs=Chhatrapur" class="btn btn-dark">Chhatrapur</a>
+              <a href="./admin.php?campusIs=Vizianagaram" class="btn btn-dark">Vizianagaram</a>
               <!-- Bar Chart -->
               <canvas id="campusSelect" style="max-height: 400px;"></canvas>
               <script>
@@ -399,10 +403,10 @@ else {
                   new Chart(document.querySelector('#campusSelect'), {
                     type: 'bar',
                     data: {
-                      labels: ['Bhubaneswar', 'Balasore', 'Balangir', 'Paralakhemundi', 'Rayagada', 'Chatrapur'],
+                      labels: ['Bhubaneswar', 'Balasore', 'Balangir', 'Paralakhemundi', 'Rayagada', 'Chatrapur', 'Vizianagaram'],
                       datasets: [{
                         label: 'Bar Chart',
-                        data: [<?=$totalInBbsr?>, <?=$totalInBls?>, <?=$totalInBal?>, <?=$totalInPkd?>, <?=$totalInRgd?>, <?=$totalInChaterpur?>],
+                        data: [<?=$totalInBbsr?>, <?=$totalInBls?>, <?=$totalInBal?>, <?=$totalInPkd?>, <?=$totalInRgd?>,<?=$totalInChaterpur?>, <?=$totalInVizianagaram?>],
                         backgroundColor: [
                           'rgba(255, 99, 132, 0.2)',
                           'rgba(255, 159, 64, 0.2)',
@@ -484,8 +488,8 @@ else {
                         <td><?=$getDataForTables['no']?></td>
                         <td><?=$getDataForTables['campus']?></td>
                         <td><?=$getDataForTables['school']?></td>
+                        <td><?=$getDataForTables['dept']?></td>
                         <td><?=$getDataForTables['expertIn']?></td>
-                        <td><?=$getDataForTables['details']?></td>
                       </tr>
                       <?php
                         }

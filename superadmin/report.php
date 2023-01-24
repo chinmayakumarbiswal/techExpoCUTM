@@ -17,15 +17,23 @@ if(isset($_POST['find'])){
   $campus=mysqli_real_escape_string($db,$_POST['campus']);
   $school=mysqli_real_escape_string($db,$_POST['school']);
   $dept=mysqli_real_escape_string($db,$_POST['dept']);
+
+echo $expertIn;
+echo $tech;
+echo $campus;
+echo $school;
+echo $dept;
+
+  if($campus == "All" && $school == "All" && $dept == "All"){
+   $getDataForTable=getAllDetailsByAdminWithFilterAllCampus($db,$expertIn,$tech); 
+  }else if($school == "All" && $dept == "All"){
+  	$getDataForTable=getAllDetailsByAdminWithFilterAllSchool($db,$expertIn,$tech,$campus); 
+  }else if($dept == "All"){
+  	$getDataForTable=getAllDetailsByAdminWithFilterAllDept($db,$expertIn,$tech,$campus,$school); 
+  }else{
+  	$getDataForTable=getAllDetailsByAdminWithFilter($db,$expertIn,$tech,$campus,$school,$dept); 
+  }
   
-  // echo $expertIn."<br>";
-  // echo $tech."<br>";
-  // echo $campus."<br>";
-  // echo $school."<br>";
-  // echo $dept."<br>";
-
-  $getDataForTable=getAllDetailsByAdminWithFilter($db,$expertIn,$tech,$campus,$school,$dept); 
-
 }
 else {
   $getDataForTable=getAllDetailsByAdmin($db); 
@@ -73,7 +81,7 @@ else {
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center">
+      <a href="admin.php" class="logo d-flex align-items-center">
         <img src="../icon.webp" alt="">
         <span class="d-none d-lg-block">Tech Expert</span>
       </a>
@@ -164,7 +172,7 @@ else {
       <h1>Dashboard</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item"><a href="admin.php">Home</a></li>
           <li class="breadcrumb-item active">Dashboard</li>
         </ol>
       </nav>
@@ -202,12 +210,14 @@ else {
                   <label class="col-sm-2 col-form-label">Campus</label>
                   <div class="col-sm-10">
                     <select class="form-select" aria-label="Default select example" name="campus">
-                      <option value="Bhubaneswar" selected>Bhubaneswar</option>
+                      <option value="All" selected>All</option>
+                      <option value="BBSR">Bhubaneswar</option>
                       <option value="Balasore">Balasore</option>
                       <option value="Balangir">Balangir</option>
                       <option value="Paralakhemundi">Paralakhemundi</option>
                       <option value="Rayagada">Rayagada</option>
                       <option value="Chatrapur">Chatrapur</option>
+                      <option value="Vizianagaram">Vizianagaram</option>
                     </select>
                   </div>
                 </div>
@@ -215,7 +225,7 @@ else {
                   <label class="col-sm-2 col-form-label">School</label>
                   <div class="col-sm-10">
                     <select class="form-select" aria-label="Default select example" name="school" id="school" onChange="getDept()">
-                      
+                    
                     </select>
                   </div>
                 </div>
@@ -223,7 +233,7 @@ else {
                   <label class="col-sm-2 col-form-label">Department</label>
                   <div class="col-sm-10">
                     <select class="form-select" aria-label="Default select example" name="dept" id="dept">
-                    <option selected>Select School</option>
+                    <option value="All" selected>All</option>
                     </select>
                   </div>
                 </div>
@@ -393,7 +403,7 @@ else {
       document.getElementById('school').disabled = true
       axios.get("../include/getSchool.php").then((response) => {
         console.log(response);
-        let options = '<option value="">Select one option</option>';
+        let options = '<option value="All">All</option>';
         for (let each of response.data.data) {
           options += `<option value="${each}">${each}</option>`;
         }
@@ -409,7 +419,7 @@ else {
       document.getElementById('dept').innerHTML = '<option value="">Loading</option>';
       axios.get("../include/getDept.php?school=" + selection).then((response) => {
         console.log(response);
-        let options = '';
+        let options = '<option value="All">All</option>';
         for (let each of response.data.data) {
             options += `<option value="${each}">${each}</option>`;
         }
