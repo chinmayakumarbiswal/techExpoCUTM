@@ -17,15 +17,23 @@ if(isset($_POST['find'])){
   $campus=mysqli_real_escape_string($db,$_POST['campus']);
   $school=mysqli_real_escape_string($db,$_POST['school']);
   $dept=mysqli_real_escape_string($db,$_POST['dept']);
+
+echo $expertIn;
+echo $tech;
+echo $campus;
+echo $school;
+echo $dept;
+
+  if($campus == "All" && $school == "All" && $dept == "All"){
+   $getDataForTable=getAllDetailsByAdminWithFilterAllCampus($db,$expertIn,$tech); 
+  }else if($school == "All" && $dept == "All"){
+  	$getDataForTable=getAllDetailsByAdminWithFilterAllSchool($db,$expertIn,$tech,$campus); 
+  }else if($dept == "All"){
+  	$getDataForTable=getAllDetailsByAdminWithFilterAllDept($db,$expertIn,$tech,$campus,$school); 
+  }else{
+  	$getDataForTable=getAllDetailsByAdminWithFilter($db,$expertIn,$tech,$campus,$school,$dept); 
+  }
   
-  // echo $expertIn."<br>";
-  // echo $tech."<br>";
-  // echo $campus."<br>";
-  // echo $school."<br>";
-  // echo $dept."<br>";
-
-  $getDataForTable=getAllDetailsByAdminWithFilter($db,$expertIn,$tech,$campus,$school,$dept); 
-
 }
 else {
   $getDataForTable=getAllDetailsByAdmin($db); 
@@ -73,7 +81,7 @@ else {
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center">
+      <a href="admin.php" class="logo d-flex align-items-center">
         <img src="../icon.webp" alt="">
         <span class="d-none d-lg-block">TechExpert</span>
       </a>
@@ -140,7 +148,7 @@ else {
       <h1>Dashboard</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item"><a href="admin.php">Home</a></li>
           <li class="breadcrumb-item active">Dashboard</li>
         </ol>
       </nav>
@@ -178,38 +186,30 @@ else {
                   <label class="col-sm-2 col-form-label">Campus</label>
                   <div class="col-sm-10">
                     <select class="form-select" aria-label="Default select example" name="campus">
-                      <option value="Bhubaneswar" selected>Bhubaneswar</option>
+                     <option value="All" selected>All</option>
+                      <option value="BBSR">Bhubaneswar</option>
                       <option value="Balasore">Balasore</option>
                       <option value="Balangir">Balangir</option>
                       <option value="Paralakhemundi">Paralakhemundi</option>
                       <option value="Rayagada">Rayagada</option>
                       <option value="Chatrapur">Chatrapur</option>
+                      <option value="Vizianagaram">Vizianagaram</option>
                     </select>
                   </div>
                 </div>
                 <div class="row mb-3">
                   <label class="col-sm-2 col-form-label">School</label>
                   <div class="col-sm-10">
-                    <select class="form-select" aria-label="Default select example" name="school" >
-                      <option value="School of Management" selected>School of Management</option>
-                      <option value="School of Media and Communication">School of Media and Communication</option>
-                      <option value="School Of Paramedics & Allied Health Science">School Of Paramedics & Allied Health Science</option>
-                      <option value="School of Applied Sciences">School of Applied Sciences</option>
-                      <option value="School of Media and Communication">School of Media and Communication</option>
-                      <option value="School of Forensic Sciences">School of Forensic Sciences</option>
+                    <select class="form-select" aria-label="Default select example" name="school" id="school" onChange="getDept()">
+                    
                     </select>
                   </div>
                 </div>
                 <div class="row mb-3">
                   <label class="col-sm-2 col-form-label">Department</label>
                   <div class="col-sm-10">
-                    <select class="form-select" aria-label="Default select example" name="dept" >
-                      <option value="Bachelor of Technology in Computer Science And Engineering" selected>Bachelor of Technology in Computer Science And Engineering</option>
-                      <option value="MCA">MCA</option>
-                      <option value="Bachelor of Technology in Mechanical Engineering">Bachelor of Technology in Mechanical Engineering</option>
-                      <option value="Bachelor of Technology in Bio-Technology Engineering">Bachelor of Technology in Bio-Technology Engineering</option>
-                      <option value="Bachelor of Technology in Electrical and Electronics Engineering">Bachelor of Technology in Electrical and Electronics Engineering</option>
-                      <option value="Bachelor of Technology in Electronics and Communication Engineering">Bachelor of Technology in Electronics and Communication Engineering</option>
+                    <select class="form-select" aria-label="Default select example" name="dept" id="dept">
+                    	<option value="All" selected>All</option>
                     </select>
                   </div>
                 </div>
@@ -373,9 +373,37 @@ else {
       })
     }
 
-
-
     getheading();
+  
+  function getSchool() {
+      document.getElementById('school').disabled = true
+      axios.get("../include/getSchool.php").then((response) => {
+        console.log(response);
+        let options = '<option value="All">All</option>';
+        for (let each of response.data.data) {
+          options += `<option value="${each}">${each}</option>`;
+        }
+        document.getElementById('school').innerHTML = options;
+        document.getElementById('school').disabled = false;
+      })
+    }
+
+    function getDept() {
+      let selection = document.getElementById('school').value;
+      if (!selection) return;
+      document.getElementById('dept').disabled = true
+      document.getElementById('dept').innerHTML = '<option value="">Loading</option>';
+      axios.get("../include/getDept.php?school=" + selection).then((response) => {
+        console.log(response);
+        let options = '<option value="All">All</option>';
+        for (let each of response.data.data) {
+            options += `<option value="${each}">${each}</option>`;
+        }
+        document.getElementById('dept').innerHTML = options;
+        document.getElementById('dept').disabled = false;
+      })
+    }
+    getSchool()
   </script>
 
 </body>
