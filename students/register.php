@@ -42,16 +42,26 @@ if(isset($_POST['register'])){
 
   $workFileName=date('d-m-Y-H-i').$workFileName;
 
-
-  if(move_uploaded_file($workFileTemp,"../workfile/$workFileName")){
-    $query="INSERT INTO registerdata (name,regd,email,no,campus,school,dept,expertIn,tech,details,workUpload) VALUES('$name','$regdno','$email','$number','$campus','$school','$dept','$expertIn','$tech','$details','$workFileName')";
+  if (!$workFileTemp) {
+    $query="INSERT INTO registerdata (name,regd,email,no,campus,school,dept,expertIn,tech,details,workUpload) VALUES('$name','$regdno','$email','$number','$campus','$school','$dept','$expertIn','$tech','$details','notfound')";
     $run=mysqli_query($db,$query) or die(mysqli_error($db));
     if ($run) {
       echo "<script>alert('You Successfully submit your expert details.');</script>";
     }else {
       echo "<script>alert('Sorry Somthing wrong.');</script>";
     }
+  }else {
+    if(move_uploaded_file($workFileTemp,"../workfile/$workFileName")){
+      $query="INSERT INTO registerdata (name,regd,email,no,campus,school,dept,expertIn,tech,details,workUpload) VALUES('$name','$regdno','$email','$number','$campus','$school','$dept','$expertIn','$tech','$details','$workFileName')";
+      $run=mysqli_query($db,$query) or die(mysqli_error($db));
+      if ($run) {
+        echo "<script>alert('You Successfully submit your expert details.');</script>";
+      }else {
+        echo "<script>alert('Sorry Somthing wrong.');</script>";
+      }
+    }
   }
+  
 
 }
 
@@ -249,7 +259,7 @@ if(isset($_POST['register'])){
                 <div class="row mb-3">
                   <label for="inputNumber" class="col-sm-2 col-form-label">Upload Your Work</label>
                   <div class="col-sm-10">
-                    <input class="form-control" type="file" id="formFile" name="work" required> 
+                    <input class="form-control" type="file" id="formFile" name="work"> 
                   </div>
                 </div>
 
@@ -271,14 +281,9 @@ if(isset($_POST['register'])){
   </main>
 
   <!-- ======= Footer ======= -->
-  <footer id="footer" class="footer">
-    <div class="copyright">
-      &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
-    </div>
-    <div class="credits">
-      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-    </div>
-  </footer><!-- End Footer -->
+  <?php
+    include_once('../include/footer.php')
+  ?>
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 

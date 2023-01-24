@@ -37,8 +37,14 @@ if($_SESSION['userType']=="admin")
   if(isset($_GET['expertIn'])){
     $getExpertIn=$_GET['expertIn'];
     $graphData=getAlldataForGrapthBarByAdmin($db,$getExpertIn);
+    $getDataForTable=getAllDetailsByAdminTech($db,$getExpertIn);
+  }else if(isset($_GET['campusIs'])){
+    $getCampus=$_GET['campusIs'];
+    $getDataForTable=getAllDetailsByAdminCampus($db,$getCampus);
+    $graphData=getAlldataForGrapthBarByAdmin($db,'IT');
   }else {
     $graphData=getAlldataForGrapthBarByAdmin($db,'IT');
+    $getDataForTable=getAllDetailsByAdmin($db); 
   }
   
   foreach ($graphData as $graphDatas) {
@@ -356,7 +362,11 @@ else {
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Student Campus Wise</h5>
-
+              <a href="./admin.php?campusIs=BBSR" class="btn btn-dark">BBSR</a>
+              <a href="./admin.php?campusIs=Paralakhemundi" class="btn btn-dark">Paralakhemundi</a>
+              <a href="./admin.php?campusIs=Balasore" class="btn btn-dark">Balasore</a>
+              <a href="./admin.php?campusIs=Bolangir" class="btn btn-dark">Bolangir</a>
+              <a href="./admin.php?campusIs=Rayagada" class="btn btn-dark">Rayagada</a>
               <!-- Bar Chart -->
               <canvas id="campusSelect" style="max-height: 400px;"></canvas>
               <script>
@@ -440,8 +450,7 @@ else {
                       </tr>
                     </thead>
                     <tbody>
-                      <?php
-                        $getDataForTable=getAllDetailsByAdmin($db);          
+                      <?php        
                         foreach($getDataForTable as $getDataForTables){
                       ?>
                       <tr>

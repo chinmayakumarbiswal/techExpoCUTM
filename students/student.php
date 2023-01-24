@@ -151,6 +151,7 @@ else {
                         <th scope="col">School</th>
                         <th scope="col">Department</th>
                         <th scope="col">ExpertIn</th>
+                        <th scope="col">Technology</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -165,8 +166,9 @@ else {
                         <td><?=$getDataForTables['no']?></td>
                         <td><?=$getDataForTables['campus']?></td>
                         <td><?=$getDataForTables['school']?></td>
+                        <td><?=$getDataForTables['dept']?></td>
                         <td><?=$getDataForTables['expertIn']?></td>
-                        <td><?=$getDataForTables['details']?></td>
+                        <td><?=$getDataForTables['tech']?></td>
                       </tr>
                       <?php
                         }
@@ -189,14 +191,9 @@ else {
   </main>
 
   <!-- ======= Footer ======= -->
-  <footer id="footer" class="footer">
-    <div class="copyright">
-      &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
-    </div>
-    <div class="credits">
-      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-    </div>
-  </footer><!-- End Footer -->
+  <?php
+    include_once('../include/footer.php')
+  ?>
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 

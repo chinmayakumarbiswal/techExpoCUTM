@@ -26,6 +26,26 @@
         return $data;
     }
 
+    function getAllDetailsByAdminCampus($db,$campus){
+        $query="SELECT * FROM registerdata WHERE campus='$campus' ORDER BY id DESC";
+        $run=mysqli_query($db,$query);
+        $data=array();
+        while($d=mysqli_fetch_assoc($run)){
+            $data[]=$d;
+        }
+        return $data;
+    }
+
+    function getAllDetailsByAdminTech($db,$getExpertIn){
+        $query="SELECT * FROM registerdata WHERE expertIn='$getExpertIn' ORDER BY id DESC";
+        $run=mysqli_query($db,$query);
+        $data=array();
+        while($d=mysqli_fetch_assoc($run)){
+            $data[]=$d;
+        }
+        return $data;
+    }
+
     function getAllDetailsByAdminWithFilter($db,$expertIn,$tech,$campus,$school,$dept){
         $query="SELECT * FROM registerdata WHERE expertIn='$expertIn' AND tech='$tech' AND campus='$campus' AND school='$school' AND dept='$dept' ORDER BY id DESC";
         $run=mysqli_query($db,$query);
