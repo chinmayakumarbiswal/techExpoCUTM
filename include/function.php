@@ -86,6 +86,38 @@
         return $data;
     }
 
+    function getAllDetailsByAdminWithoutTech($db,$expertIn,$campus,$school,$dept){
+        $query="SELECT * FROM registerdata WHERE expertIn='$expertIn' AND campus='$campus' AND school='$school' AND dept='$dept' ORDER BY id DESC";
+        $run=mysqli_query($db,$query);
+        $data=array();
+        while($d=mysqli_fetch_assoc($run)){
+            $data[]=$d;
+        }
+        return $data;
+    }
+
+    function getAllDetailsByAdminWithCamSchDept($db,$campus,$school,$dept){
+        $query="SELECT * FROM registerdata WHERE campus='$campus' AND school='$school' AND dept='$dept' ORDER BY id DESC";
+        $run=mysqli_query($db,$query);
+        $data=array();
+        while($d=mysqli_fetch_assoc($run)){
+            $data[]=$d;
+        }
+        return $data;
+    }
+
+    function getAllDetailsByAdminWithCamSch($db,$campus,$school){
+        $query="SELECT * FROM registerdata WHERE campus='$campus' AND school='$school' ORDER BY id DESC";
+        $run=mysqli_query($db,$query);
+        $data=array();
+        while($d=mysqli_fetch_assoc($run)){
+            $data[]=$d;
+        }
+        return $data;
+    }
+
+    
+
     function getAllRegisterStudentByAdmin($db){
         $query="SELECT * FROM registerdata GROUP BY email;";
         $data=mysqli_query($db, $query);

@@ -18,22 +18,28 @@ if(isset($_POST['find'])){
   $school=mysqli_real_escape_string($db,$_POST['school']);
   $dept=mysqli_real_escape_string($db,$_POST['dept']);
 
-echo $expertIn;
-echo $tech;
-echo $campus;
-echo $school;
-echo $dept;
 
-  if($campus == "All" && $school == "All" && $dept == "All"){
-   $getDataForTable=getAllDetailsByAdminWithFilterAllCampus($db,$expertIn,$tech); 
-  }else if($school == "All" && $dept == "All"){
-  	$getDataForTable=getAllDetailsByAdminWithFilterAllSchool($db,$expertIn,$tech,$campus); 
-  }else if($dept == "All"){
-  	$getDataForTable=getAllDetailsByAdminWithFilterAllDept($db,$expertIn,$tech,$campus,$school); 
-  }else{
-  	$getDataForTable=getAllDetailsByAdminWithFilter($db,$expertIn,$tech,$campus,$school,$dept); 
+
+  if ($campus != "All" && $school != "All" && $dept != "All" && $expertIn != "All" && $tech != "All") {
+    $getDataForTable=getAllDetailsByAdminWithFilter($db,$expertIn,$tech,$campus,$school,$dept);
+  }elseif ($campus != "All" && $school != "All" && $dept != "All" && $expertIn != "All") {
+    $getDataForTable=getAllDetailsByAdminWithoutTech($db,$expertIn,$campus,$school,$dept);
+  }elseif ($campus != "All" && $school != "All" && $expertIn != "All" && $tech != "All") {
+    $getDataForTable=getAllDetailsByAdminWithFilterAllDept($db,$expertIn,$tech,$campus,$school);
+  }elseif ($campus != "All" && $school != "All" && $dept != "All") {
+    $getDataForTable=getAllDetailsByAdminWithCamSchDept($db,$campus,$school,$dept);
+  }elseif ($campus != "All" && $expertIn != "All" && $tech != "All") {
+    $getDataForTable=getAllDetailsByAdminWithFilterAllSchool($db,$expertIn,$tech,$campus);
+  }elseif ($campus != "All" && $school != "All") {
+    $getDataForTable=getAllDetailsByAdminWithCamSch($db,$campus,$school);
+  }elseif ($expertIn != "All" && $tech != "All") {
+    $getDataForTable=getAllDetailsByAdminWithFilterAllCampus($db,$expertIn,$tech); 
+  }elseif ($campus != "All") {
+    $getDataForTable=getAllDetailsByAdminCampus($db,$campus);
+  }else {    
+    $getDataForTable=getAllDetailsByAdmin($db); 
   }
-  
+
 }
 else {
   $getDataForTable=getAllDetailsByAdmin($db); 
@@ -189,28 +195,11 @@ else {
               <!-- General Form Elements -->
               <form action="" method="post" enctype="multipart/form-data">
                 
-                
-                <div class="row mb-3">
-                  <label class="col-sm-2 col-form-label">Area of Technology</label>
-                  <div class="col-sm-10">
-                    <select class="form-select" aria-label="Default select example" name="expertIn" id="heading" onChange="getTechExpert()">
-                      
-                    </select>
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label class="col-sm-2 col-form-label">Technology (Tech expert in)</label>
-                  <div class="col-sm-10">
-                    <select class="form-select" aria-label="Default select example" name="tech" id="techIn">
-                      <option selected>Select Area of Tech</option>
-                    </select>
-                  </div>
-                </div>
                 <div class="row mb-3">
                   <label class="col-sm-2 col-form-label">Campus</label>
                   <div class="col-sm-10">
                     <select class="form-select" aria-label="Default select example" name="campus">
-                      <option value="All" selected>All</option>
+                      <option value="All" selected>Select One Option(Default All)</option>
                       <option value="BBSR">Bhubaneswar</option>
                       <option value="Balasore">Balasore</option>
                       <option value="Balangir">Balangir</option>
@@ -233,7 +222,23 @@ else {
                   <label class="col-sm-2 col-form-label">Department</label>
                   <div class="col-sm-10">
                     <select class="form-select" aria-label="Default select example" name="dept" id="dept">
-                    <option value="All" selected>All</option>
+                    <option value="All" selected>Select One Option(Default All)</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label class="col-sm-2 col-form-label">Area of Technology</label>
+                  <div class="col-sm-10">
+                    <select class="form-select" aria-label="Default select example" name="expertIn" id="heading" onChange="getTechExpert()">
+                      
+                    </select>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label class="col-sm-2 col-form-label">Technology (Tech expert in)</label>
+                  <div class="col-sm-10">
+                    <select class="form-select" aria-label="Default select example" name="tech" id="techIn">
+                      <option value="All" selected>Select One Option(Default All)</option>
                     </select>
                   </div>
                 </div>
@@ -243,7 +248,7 @@ else {
                     <button type="submit" class="btn btn-primary" name="find">Submit</button>
                   </div>
                 </div>
-
+                
               </form><!-- End General Form Elements -->
             </div>
           </div>
@@ -373,7 +378,7 @@ else {
       document.getElementById('heading').disabled = true
       axios.get("../include/getheading.php").then((response) => {
         console.log(response);
-        let options = '<option value="">Select one option</option>';
+        let options = '<option value="All">Select One Option(Default All)</option>';
         for (let each of response.data.data) {
           options += `<option value="${each}">${each}</option>`;
         }
@@ -389,7 +394,7 @@ else {
       document.getElementById('techIn').innerHTML = '<option value="">Loading</option>';
       axios.get("../include/gettech.php?heading=" + selection).then((response) => {
         console.log(response);
-        let options = '';
+        let options = '<option value="All">Select One Option(Default All)</option>';
         for (let each of response.data.data) {
             options += `<option value="${each}">${each}</option>`;
         }
@@ -403,7 +408,7 @@ else {
       document.getElementById('school').disabled = true
       axios.get("../include/getSchool.php").then((response) => {
         console.log(response);
-        let options = '<option value="All">All</option>';
+        let options = '<option value="All">Select One Option(Default All)</option>';
         for (let each of response.data.data) {
           options += `<option value="${each}">${each}</option>`;
         }
@@ -419,7 +424,7 @@ else {
       document.getElementById('dept').innerHTML = '<option value="">Loading</option>';
       axios.get("../include/getDept.php?school=" + selection).then((response) => {
         console.log(response);
-        let options = '<option value="All">All</option>';
+        let options = '<option value="All">Select One Option(Default All)</option>';
         for (let each of response.data.data) {
             options += `<option value="${each}">${each}</option>`;
         }
