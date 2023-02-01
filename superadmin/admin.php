@@ -28,6 +28,7 @@ if($_SESSION['userType']=="superAdmin")
   $totalAg=getAllRegisterStudentByAdminExpertIn($db,'Agricultural');
   $totalManage=getAllRegisterStudentByAdminExpertIn($db,'Management');
   $totalIt=getAllRegisterStudentByAdminExpertIn($db,'IT / Communication Engineering');
+  $totalManuFact=getAllRegisterStudentByAdminExpertIn($db,'Manufacturing');
   $totalOt=getAllRegisterStudentByAdminExpertIn($db,'Others');
 
   // 
@@ -296,10 +297,10 @@ else {
                   new Chart(document.querySelector('#pieChart'), {
                     type: 'pie',
                     data: {
-                      labels: ['Food Processing','Agricultural','IT / Communication Engineering','Management','Others'],
+                      labels: ['Food Processing','Agricultural','IT / Communication Engineering','Management','Manufacturing','Others'],
                       datasets: [{
                         label: 'My First Dataset',
-                        data: [<?=$totalfood?>, <?=$totalAg?>, <?=$totalIt?>, <?=$totalManage?>, <?=$totalOt?>],
+                        data: [<?=$totalfood?>, <?=$totalAg?>, <?=$totalIt?>, <?=$totalManage?>, <?=$totalManuFact?>, <?=$totalOt?>],
                         backgroundColor: [
                           'rgb(55, 199, 22)',
                           'rgb(54, 162, 235)',
@@ -335,6 +336,9 @@ else {
                 </a>
                 <a href="./admin.php?expertIn=Management" class="btn btn-dark">
                   Management
+                </a>
+                <a href="./admin.php?expertIn=Manufacturing" class="btn btn-dark">
+                  Manufacturing
                 </a>
                 <a href="./admin.php?expertIn=Other" class="btn btn-dark">
                   Other
