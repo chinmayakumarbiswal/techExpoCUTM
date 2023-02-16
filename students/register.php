@@ -42,26 +42,32 @@ if(isset($_POST['register'])){
 
   $workFileName=date('d-m-Y-H-i').$workFileName;
 
-  if (!$workFileTemp) {
-    $query="INSERT INTO registerdata (name,regd,email,no,campus,school,dept,expertIn,tech,details,workUpload) VALUES('$name','$regdno','$email','$number','$campus','$school','$dept','$expertIn','$tech','$details','notfound')";
-    $run=mysqli_query($db,$query) or die(mysqli_error($db));
-    if ($run) {
-      echo "<script>alert('You Successfully submit your expert details.');</script>";
-    }else {
-      echo "<script>alert('Sorry Somthing wrong.');</script>";
-    }
+  $query="SELECT * FROM registerdata WHERE email='$email' AND tech='$tech'";
+  $runQuery=mysqli_query($db,$query);
+  $totalRows=mysqli_num_rows($runQuery);
+  if($totalRows >=1){
+    echo "<script>alert('Sorry you already register for ".$tech.".');</script>";
   }else {
-    if(move_uploaded_file($workFileTemp,"../workfile/$workFileName")){
-      $query="INSERT INTO registerdata (name,regd,email,no,campus,school,dept,expertIn,tech,details,workUpload) VALUES('$name','$regdno','$email','$number','$campus','$school','$dept','$expertIn','$tech','$details','$workFileName')";
+    if (!$workFileTemp) {
+      $query="INSERT INTO registerdata (name,regd,email,no,campus,school,dept,expertIn,tech,details,workUpload) VALUES('$name','$regdno','$email','$number','$campus','$school','$dept','$expertIn','$tech','$details','notfound')";
       $run=mysqli_query($db,$query) or die(mysqli_error($db));
       if ($run) {
         echo "<script>alert('You Successfully submit your expert details.');</script>";
       }else {
         echo "<script>alert('Sorry Somthing wrong.');</script>";
       }
+    }else {
+      if(move_uploaded_file($workFileTemp,"../workfile/$workFileName")){
+        $query="INSERT INTO registerdata (name,regd,email,no,campus,school,dept,expertIn,tech,details,workUpload) VALUES('$name','$regdno','$email','$number','$campus','$school','$dept','$expertIn','$tech','$details','$workFileName')";
+        $run=mysqli_query($db,$query) or die(mysqli_error($db));
+        if ($run) {
+          echo "<script>alert('You Successfully submit your expert details.');</script>";
+        }else {
+          echo "<script>alert('Sorry Somthing wrong.');</script>";
+        }
+      }
     }
   }
-  
 
 }
 
@@ -236,7 +242,7 @@ if(isset($_POST['register'])){
                 <div class="row mb-3">
                   <label class="col-sm-2 col-form-label">Area of Technology</label>
                   <div class="col-sm-10">
-                    <select class="form-select" aria-label="Default select example" name="expertIn" id="heading" onChange="getTechExpert()">
+                    <select class="form-select" aria-label="Default select example" name="expertIn" id="heading" onChange="getTechExpert()" required>
                       
                     </select>
                   </div>
@@ -244,7 +250,7 @@ if(isset($_POST['register'])){
                 <div class="row mb-3">
                   <label class="col-sm-2 col-form-label">Technology (Tech expert in)</label>
                   <div class="col-sm-10">
-                    <select class="form-select" aria-label="Default select example" name="tech" id="techIn">
+                    <select class="form-select" aria-label="Default select example" name="tech" id="techIn" required>
                       <option selected>Open this select menu</option>
                     </select>
                   </div>
