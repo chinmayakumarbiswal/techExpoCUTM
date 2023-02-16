@@ -1,4 +1,4 @@
 <?php
     session_start();
-    $db =mysqli_connect('localhost','root','','cutmtechexpo');
+    $db =mysqli_connect('localhost','root','','techexpert');
 ?>

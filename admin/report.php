@@ -220,8 +220,13 @@ else {
                 </div>
                 <div class="row mb-3">
                   <label class="col-sm-2 col-form-label">Find Student List</label>
-                  <div class="col-sm-10">
+                  <div class="col-sm-4">
                     <button type="submit" class="btn btn-primary" name="find">Submit</button>
+                  </div>
+
+                  <label class="col-sm-3 col-form-label">Print Registration Data</label>
+                  <div class="col-sm-3">
+                    <button type="button" class="btn btn-primary" onclick="printTable()">Print To Excel</button>
                   </div>
                 </div>
                 
@@ -246,7 +251,7 @@ else {
                 <div class="card-body">
                   <h5 class="card-title">Applied Student</h5>
 
-                  <table class="table table-borderless datatable">
+                  <table class="table table-borderless datatable" id="tableData">
                     <thead>
                       <tr>
                         <th scope="col">Name</th>
@@ -408,6 +413,17 @@ else {
       })
     }
     getSchool()
+
+    function printTable() {
+      let data = document.getElementById('tableData');
+      var fp = XLSX.utils.table_to_book(data, {sheet: 'cutm'});
+      XLSX.write(fp, {
+          bookType: 'xlsx',
+          type: 'base64'
+      });
+      XLSX.writeFile(fp, 'techexpertStudent.xlsx')
+    }
+    
   </script>
 
 </body>
